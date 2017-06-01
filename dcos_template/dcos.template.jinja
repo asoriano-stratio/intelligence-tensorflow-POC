@@ -1,0 +1,88 @@
+{%- set cluster_name = "test_tf_cluster" %}
+
+{%- set docker_image = "intelligence-tensorflow:1.1.0" %}
+
+{%- set worker_replicas = 3 %}
+{%- set worker_cpu = 2 %}
+{%- set worker_mem = 2096 %}
+
+{%- set ps_replicas = 2 -%}
+{%- set ps_cpu = 2 %}
+{%- set ps_mem = 2096 %}
+
+{%- set vip_port = 2333 %}
+
+{%- set tensorboard = false %}
+{%- set tensorboard_cpu = 1 %}
+{%- set tensorboard_mem = 1096 %}
+{%- set train_dir = "/tmp/" %}
+
+{%- set replicas = {"worker": worker_replicas, "ps": ps_replicas} -%}
+
+{%- macro worker_hosts() -%}
+  {%- for i in range(worker_replicas) -%}
+    {%- if not loop.first -%},{%- endif -%}
+    {{ cluster_name }}-worker-{{ i }}.marathon.l4lb.thisdcos.directory:{{ vip_port  }}
+  {%- endfor -%}
+{%- endmacro -%}
+
+{%- macro ps_hosts() -%}
+  {%- for i in range(ps_replicas) -%}
+    {%- if not loop.first -%},{%- endif -%}
+    {{ cluster_name }}-ps-{{ i }}.marathon.l4lb.thisdcos.directory:{{ vip_port  }}
+  {%- endfor -%}
+{%- endmacro -%}
+
+{
+  "id": "{{ cluster_name }}",
+  "apps": [
+    {%- for job in ["worker", "ps"] -%}
+    {%- for i in range(replicas[job]) %}
+    {
+      "id": "{{ cluster_name }}-{{ job }}-{{ i }}",
+      "container": {
+        "docker": {
+          "image": "{{ docker_image }}"
+        },
+        "network": "HOST",
+        "type": "DOCKER"
+      },
+      "args": [
+          "--worker_hosts", "{{ worker_hosts() }}",
+          "--task_index", "{{ i }}",
+          "--ps_hosts", "{{ ps_hosts() }}"
+      ],{% if job == "worker" %}
+      "cpus": {{ worker_cpu }},
+      "mem": {{ worker_mem }},{% else %}
+      "cpus": {{ ps_cpu }},
+      "mem": {{ ps_mem }},{% endif %}
+      "instances": 1,
+      "portDefinitions": [
+        {
+          "port": 0,
+          "protocol": "tcp",
+          "labels": {
+            "VIP_0": "/{{ job }}-{{ i }}:{{ vip_port }}"
+          }
+        }
+      ]
+    }{%- if not loop.last %},{% endif %}
+    {%- if loop.last and job!="ps" %},{% endif %}
+    {%- endfor %}
+    {%- endfor %}{% if tensorboard %}
+    ,{
+      "id": "tensorboard",
+      "container": {
+        "docker": {
+          "image": "{{ docker_image }}"
+        },
+        "network": "HOST",
+        "type": "DOCKER"
+      },
+      "cmd": "tensorboard --logdir {{ train_dir }}",
+      "cpus": {{ tensorboard_cpu }},
+      "mem": {{ tensorboard_mem }},
+      "instances": 1
+    }{% endif %}
+  ]
+}

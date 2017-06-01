@@ -1,0 +1,37 @@
+{%- set name = "clustertfuser1" %}
+{%- set image = "malvarezs/tensorflow-distributed-last" %}
+{%- set worker_replicas = 3 %}
+{%- set dns_domain = "marathon.mesos" %}
+{%- set port = 2333 %}
+{%- set cpu = 2 %}
+{%- set mem = 2048 %}
+
+{%- set replicas = {"worker": worker_replicas} -%}
+
+{%- macro worker_hosts() -%}
+  {%- for i in range(worker_replicas) -%}
+    {%- if not loop.first -%},{%- endif -%}
+    worker{{ i }}{{ name }}.{{ dns_domain }}:{{ port + i }}
+  {%- endfor -%}
+{%- endmacro -%}
+
+{
+  "id": "{{ name }}",
+  "apps": [
+    {%- for job in ["worker"] -%}
+    {%- for i in range(replicas[job]) %}
+    {
+      "id": "{{ job }}{{ i }}",
+      "container": {
+      "type": "DOCKER",
+        "docker": { "network": "HOST", "image": "{{ image }}" } 
+      },
+      "args": ["--worker_hosts", "{{ worker_hosts() }}", "--task_index", "{{ i }}"],
+      "cpus": {{ cpu }},
+      "mem": {{ mem }},
+      "instances": 1
+    }{%- if not loop.last %},{% endif %}
+    {%- endfor %}
+    {%- endfor %}
+  ]
+}

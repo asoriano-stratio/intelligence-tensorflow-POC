@@ -1,0 +1,140 @@
+{
+  "id": "test_tf_cluster",
+  "apps": [
+    {
+      "id": "test_tf_cluster-worker-0",
+      "container": {
+        "docker": {
+          "image": "intelligence-tensorflow:1.1.0"
+        },
+        "network": "HOST",
+        "type": "DOCKER"
+      },
+      "args": [
+          "--worker_hosts", "test_tf_cluster-worker-0.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-worker-1.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-worker-2.marathon.l4lb.thisdcos.directory:2333",
+          "--task_index", "0",
+          "--ps_hosts", "test_tf_cluster-ps-0.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-ps-1.marathon.l4lb.thisdcos.directory:2333"
+      ],
+      "cpus": 2,
+      "mem": 2096,
+      "instances": 1,
+      "portDefinitions": [
+        {
+          "port": 0,
+          "protocol": "tcp",
+          "labels": {
+            "VIP_0": "/worker-0:2333"
+          }
+        }
+      ]
+    },
+    {
+      "id": "test_tf_cluster-worker-1",
+      "container": {
+        "docker": {
+          "image": "intelligence-tensorflow:1.1.0"
+        },
+        "network": "HOST",
+        "type": "DOCKER"
+      },
+      "args": [
+          "--worker_hosts", "test_tf_cluster-worker-0.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-worker-1.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-worker-2.marathon.l4lb.thisdcos.directory:2333",
+          "--task_index", "1",
+          "--ps_hosts", "test_tf_cluster-ps-0.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-ps-1.marathon.l4lb.thisdcos.directory:2333"
+      ],
+      "cpus": 2,
+      "mem": 2096,
+      "instances": 1,
+      "portDefinitions": [
+        {
+          "port": 0,
+          "protocol": "tcp",
+          "labels": {
+            "VIP_0": "/worker-1:2333"
+          }
+        }
+      ]
+    },
+    {
+      "id": "test_tf_cluster-worker-2",
+      "container": {
+        "docker": {
+          "image": "intelligence-tensorflow:1.1.0"
+        },
+        "network": "HOST",
+        "type": "DOCKER"
+      },
+      "args": [
+          "--worker_hosts", "test_tf_cluster-worker-0.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-worker-1.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-worker-2.marathon.l4lb.thisdcos.directory:2333",
+          "--task_index", "2",
+          "--ps_hosts", "test_tf_cluster-ps-0.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-ps-1.marathon.l4lb.thisdcos.directory:2333"
+      ],
+      "cpus": 2,
+      "mem": 2096,
+      "instances": 1,
+      "portDefinitions": [
+        {
+          "port": 0,
+          "protocol": "tcp",
+          "labels": {
+            "VIP_0": "/worker-2:2333"
+          }
+        }
+      ]
+    },
+    {
+      "id": "test_tf_cluster-ps-0",
+      "container": {
+        "docker": {
+          "image": "intelligence-tensorflow:1.1.0"
+        },
+        "network": "HOST",
+        "type": "DOCKER"
+      },
+      "args": [
+          "--worker_hosts", "test_tf_cluster-worker-0.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-worker-1.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-worker-2.marathon.l4lb.thisdcos.directory:2333",
+          "--task_index", "0",
+          "--ps_hosts", "test_tf_cluster-ps-0.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-ps-1.marathon.l4lb.thisdcos.directory:2333"
+      ],
+      "cpus": 2,
+      "mem": 2096,
+      "instances": 1,
+      "portDefinitions": [
+        {
+          "port": 0,
+          "protocol": "tcp",
+          "labels": {
+            "VIP_0": "/ps-0:2333"
+          }
+        }
+      ]
+    },
+    {
+      "id": "test_tf_cluster-ps-1",
+      "container": {
+        "docker": {
+          "image": "intelligence-tensorflow:1.1.0"
+        },
+        "network": "HOST",
+        "type": "DOCKER"
+      },
+      "args": [
+          "--worker_hosts", "test_tf_cluster-worker-0.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-worker-1.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-worker-2.marathon.l4lb.thisdcos.directory:2333",
+          "--task_index", "1",
+          "--ps_hosts", "test_tf_cluster-ps-0.marathon.l4lb.thisdcos.directory:2333,test_tf_cluster-ps-1.marathon.l4lb.thisdcos.directory:2333"
+      ],
+      "cpus": 2,
+      "mem": 2096,
+      "instances": 1,
+      "portDefinitions": [
+        {
+          "port": 0,
+          "protocol": "tcp",
+          "labels": {
+            "VIP_0": "/ps-1:2333"
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "id": "clustertfuser1",
+  "apps": [
+    {
+      "id": "worker0",
+      "container": {
+      "type": "DOCKER",
+        "docker": { "network": "HOST", "image": "malvarezs/tensorflow-distributed-last" } 
+      },
+      "args": ["--worker_hosts", "worker0clustertfuser1.marathon.mesos:2333,worker1clustertfuser1.marathon.mesos:2334,worker2clustertfuser1.marathon.mesos:2335", "--task_index", "0"],
+      "cpus": 2,
+      "mem": 2048,
+      "instances": 1
+    },
+    {
+      "id": "worker1",
+      "container": {
+      "type": "DOCKER",
+        "docker": { "network": "HOST", "image": "malvarezs/tensorflow-distributed-last" } 
+      },
+      "args": ["--worker_hosts", "worker0clustertfuser1.marathon.mesos:2333,worker1clustertfuser1.marathon.mesos:2334,worker2clustertfuser1.marathon.mesos:2335", "--task_index", "1"],
+      "cpus": 2,
+      "mem": 2048,
+      "instances": 1
+    },
+    {
+      "id": "worker2",
+      "container": {
+      "type": "DOCKER",
+        "docker": { "network": "HOST", "image": "malvarezs/tensorflow-distributed-last" } 
+      },
+      "args": ["--worker_hosts", "worker0clustertfuser1.marathon.mesos:2333,worker1clustertfuser1.marathon.mesos:2334,worker2clustertfuser1.marathon.mesos:2335", "--task_index", "2"],
+      "cpus": 2,
+      "mem": 2048,
+      "instances": 1
+    }
+  ]
+}
