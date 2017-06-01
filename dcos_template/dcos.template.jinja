@@ -1,4 +1,4 @@
-{%- set cluster_name = "test_tf_cluster" %}
+{%- set cluster_name = "test-tf-cluster" %}
 
 {%- set docker_image = "intelligence-tensorflow:1.1.0" %}
 
@@ -22,14 +22,14 @@
 {%- macro worker_hosts() -%}
   {%- for i in range(worker_replicas) -%}
     {%- if not loop.first -%},{%- endif -%}
-    {{ cluster_name }}-worker-{{ i }}.marathon.l4lb.thisdcos.directory:{{ vip_port  }}
+    {{ cluster_name }}-worker-{{ i }}
   {%- endfor -%}
 {%- endmacro -%}
 
 {%- macro ps_hosts() -%}
   {%- for i in range(ps_replicas) -%}
     {%- if not loop.first -%},{%- endif -%}
-    {{ cluster_name }}-ps-{{ i }}.marathon.l4lb.thisdcos.directory:{{ vip_port  }}
+    {{ cluster_name }}-ps-{{ i }}
   {%- endfor -%}
 {%- endmacro -%}
 
@@ -48,9 +48,11 @@
         "type": "DOCKER"
       },
       "args": [
+          "--id", "{{ cluster_name }}-{{ job }}-{{ i }}",
           "--worker_hosts", "{{ worker_hosts() }}",
           "--task_index", "{{ i }}",
-          "--ps_hosts", "{{ ps_hosts() }}"
+          "--ps_hosts", "{{ ps_hosts() }}",
+          "--job", "{{ job }}"
       ],{% if job == "worker" %}
       "cpus": {{ worker_cpu }},
       "mem": {{ worker_mem }},{% else %}

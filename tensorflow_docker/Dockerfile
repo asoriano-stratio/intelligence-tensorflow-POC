@@ -16,4 +16,4 @@ RUN chmod +x /tmp/init_inGraph_tf.py
 #       Uses three input arguments '--worker_hosts', '--ps_hosts' and '--task_index'
 
 ENTRYPOINT ["python3.5", "/tmp/init_inGraph_tf.py"]
-CMD ["$1 $2 $2"]
+CMD ["$1 $2 $3 $4 $5"]
