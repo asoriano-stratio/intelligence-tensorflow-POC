@@ -52,7 +52,8 @@
           "--worker_hosts", "{{ worker_hosts() }}",
           "--task_index", "{{ i }}",
           "--ps_hosts", "{{ ps_hosts() }}",
-          "--job", "{{ job }}"
+          "--job", "{{ job }}",
+          "--vip_port","{{ vip_port }}"
       ],{% if job == "worker" %}
       "cpus": {{ worker_cpu }},
       "mem": {{ worker_mem }},{% else %}
@@ -64,7 +65,7 @@
           "port": 0,
           "protocol": "tcp",
           "labels": {
-            "VIP_0": "/{{ job }}-{{ i }}:{{ vip_port }}"
+            "VIP_0": "/{{ cluster_name }}-{{ job }}-{{ i }}:{{ vip_port }}"
           }
         }
       ]

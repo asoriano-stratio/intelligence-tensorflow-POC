@@ -8,6 +8,7 @@ FLAGS = None
 def main(_):
 
     id = FLAGS.id
+    vip_port = str(FLAGS.vip_port)
     worker_hosts = FLAGS.worker_hosts.split(",")
     ps_hosts = FLAGS.ps_hosts.split(",")
 
@@ -16,14 +17,14 @@ def main(_):
         if worker == id:
             worker_conn += [worker + ".marathon.l4lb.thisdcos.directory:" + os.getenv("PORT0")]
         else:
-            worker_conn += [worker + ".marathon.l4lb.thisdcos.directory:2330"]
+            worker_conn += [worker + ".marathon.l4lb.thisdcos.directory:" + vip_port]
 
     ps_conn = []
     for ps in ps_hosts:
         if ps == id:
             ps_conn += [ps + ".marathon.l4lb.thisdcos.directory:" + os.getenv("PORT0")]
         else:
-            ps_conn += [ps + ".marathon.l4lb.thisdcos.directory:2330"]
+            ps_conn += [ps + ".marathon.l4lb.thisdcos.directory:" + vip_port]
 
     cluster = tf.train.ClusterSpec(
         {
@@ -37,6 +38,8 @@ def main(_):
 
 
 if __name__ == '__main__':
+
+    print("Hello from Tensorflow")
 
     # => Parsing input arguments
     # ------------------------------------------------------------
@@ -57,6 +60,9 @@ if __name__ == '__main__':
 
     # · Flags for defining
     parser.add_argument("--id", type=str, default=0, help="")
+
+    # · Flags for defining
+    parser.add_argument("--vip_port", type=str, default=0, help="")
 
     FLAGS, unparsed = parser.parse_known_args()
 

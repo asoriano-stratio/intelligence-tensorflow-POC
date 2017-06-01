@@ -15,7 +15,8 @@
           "--worker_hosts", "test-tf-cluster-worker-0,test-tf-cluster-worker-1,test-tf-cluster-worker-2",
           "--task_index", "0",
           "--ps_hosts", "test-tf-cluster-ps-0,test-tf-cluster-ps-1",
-          "--job", "worker"
+          "--job", "worker",
+          "--vip_port","2333"
       ],
       "cpus": 2,
       "mem": 2096,
@@ -25,7 +26,7 @@
           "port": 0,
           "protocol": "tcp",
           "labels": {
-            "VIP_0": "/worker-0:2333"
+            "VIP_0": "/test-tf-cluster-worker-0:2333"
           }
         }
       ]
@@ -44,7 +45,8 @@
           "--worker_hosts", "test-tf-cluster-worker-0,test-tf-cluster-worker-1,test-tf-cluster-worker-2",
           "--task_index", "1",
           "--ps_hosts", "test-tf-cluster-ps-0,test-tf-cluster-ps-1",
-          "--job", "worker"
+          "--job", "worker",
+          "--vip_port","2333"
       ],
       "cpus": 2,
       "mem": 2096,
@@ -54,7 +56,7 @@
           "port": 0,
           "protocol": "tcp",
           "labels": {
-            "VIP_0": "/worker-1:2333"
+            "VIP_0": "/test-tf-cluster-worker-1:2333"
           }
         }
       ]
@@ -73,7 +75,8 @@
           "--worker_hosts", "test-tf-cluster-worker-0,test-tf-cluster-worker-1,test-tf-cluster-worker-2",
           "--task_index", "2",
           "--ps_hosts", "test-tf-cluster-ps-0,test-tf-cluster-ps-1",
-          "--job", "worker"
+          "--job", "worker",
+          "--vip_port","2333"
       ],
       "cpus": 2,
       "mem": 2096,
@@ -83,7 +86,7 @@
           "port": 0,
           "protocol": "tcp",
           "labels": {
-            "VIP_0": "/worker-2:2333"
+            "VIP_0": "/test-tf-cluster-worker-2:2333"
           }
         }
       ]
@@ -102,7 +105,8 @@
           "--worker_hosts", "test-tf-cluster-worker-0,test-tf-cluster-worker-1,test-tf-cluster-worker-2",
           "--task_index", "0",
           "--ps_hosts", "test-tf-cluster-ps-0,test-tf-cluster-ps-1",
-          "--job", "ps"
+          "--job", "ps",
+          "--vip_port","2333"
       ],
       "cpus": 2,
       "mem": 2096,
@@ -112,7 +116,7 @@
           "port": 0,
           "protocol": "tcp",
           "labels": {
-            "VIP_0": "/ps-0:2333"
+            "VIP_0": "/test-tf-cluster-ps-0:2333"
           }
         }
       ]
@@ -131,7 +135,8 @@
           "--worker_hosts", "test-tf-cluster-worker-0,test-tf-cluster-worker-1,test-tf-cluster-worker-2",
           "--task_index", "1",
           "--ps_hosts", "test-tf-cluster-ps-0,test-tf-cluster-ps-1",
-          "--job", "ps"
+          "--job", "ps",
+          "--vip_port","2333"
       ],
       "cpus": 2,
       "mem": 2096,
@@ -141,7 +146,7 @@
           "port": 0,
           "protocol": "tcp",
           "labels": {
-            "VIP_0": "/ps-1:2333"
+            "VIP_0": "/test-tf-cluster-ps-1:2333"
           }
         }
       ]
