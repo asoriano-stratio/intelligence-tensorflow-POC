@@ -4,6 +4,8 @@ import jinja2
 import json
 import requests
 from bs4 import BeautifulSoup
+import logging
+
 
 # to not log warning messages everytime we make a not verified TLS request
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
@@ -35,30 +37,35 @@ def deploy():
 
     # => Getting deployment json
     deployment_json = get_deploymnet_json()
-    print(deployment_json)
+    logging.debug('· Deployment JSON: {}'.format(deployment_json))
 
-    # => Getting cookie for Marathon request
+    # => Marathon request for group creation
+    # · Getting cookie
     cookie = login_in_dcos()
-    print(cookie)
-
+    # · Building custom headers
     custom_headers = build_auth_req_headers(cookie)
     custom_headers['Content-Type'] = 'application/json'
-
+    # · Execute request
+    logging.info('· Executing Marathon request')
     marathon_group_endpoint = "https://" + FLAGS["cluster_url"] + "/marathon/v2/groups"
-
     response = requests.post(
          marathon_group_endpoint,
          data=deployment_json,
          headers=custom_headers,
          verify=False
     )
+    logging.info('· Response status code: {}'.format(response.status_code))
+    if response.status_code == 201:
+        logging.info('· Tensorflow cluster correctly deployed!!!!!')
+    else:
+        logging.error('· Error while deploying Tensorflow cluster.')
+
 
 def build_auth_req_headers(token_cookie):
 
     authorization_code = token_cookie.get("dcos-acs-auth-cookie")
     header = {'Cookie': '{key}={value}'.format(key="dcos-acs-auth-cookie", value=authorization_code)}
     return header
-
 
 
 def login_in_dcos():
@@ -99,6 +106,11 @@ def login_in_dcos():
 
 if __name__ == '__main__':
 
+    # => Logging configuration
+    # ------------------------------------------------------------
+    logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %H:%M:%S', level=logging.DEBUG)
+    logging.info('==> Tensoflow DC/OS cluster deployer started')
+
     # => Parsing input arguments
     # ------------------------------------------------------------
     parser = argparse.ArgumentParser()
@@ -131,7 +143,9 @@ if __name__ == '__main__':
 
     parsed, unparsed = parser.parse_known_args()
     FLAGS = vars(parsed)
-    print(FLAGS)
+
+    logging.info('· Configuration: {}'.format(FLAGS))
+
 
     # => Deploying
     # ------------------------------------------------------------
