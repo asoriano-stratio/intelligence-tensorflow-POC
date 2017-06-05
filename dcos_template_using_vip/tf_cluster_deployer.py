@@ -117,7 +117,6 @@ if __name__ == '__main__':
     parser.register("type", "bool", lambda v: v.lower() == "true")
 
     # => Deployment arguments (Mandatory)
-
     parser.add_argument("--cluster_url", type=str, help="", required=True)
     parser.add_argument("--sso_username", type=str, help="", required=True)
     parser.add_argument("--sso_password", type=str, help="", required=True)

@@ -64,10 +64,15 @@
         "network": "HOST",
         "type": "DOCKER"
       },
-      "cmd": "tensorboard --logdir {{ train_dir }}",
+      "cmd": "tensorboard --logdir {{ train_dir }} --port $PORT0",
       "cpus": {{ tensorboard_cpu }},
       "mem": {{ tensorboard_mem }},
-      "instances": 1
+      "instances": 1,
+      "labels": {
+        "DCOS_SERVICE_NAME": "tensorboard",
+        "DCOS_SERVICE_PORT_INDEX": "0",
+        "DCOS_SERVICE_SCHEME": "http"
+      }
     }{% endif %}
   ]
 }

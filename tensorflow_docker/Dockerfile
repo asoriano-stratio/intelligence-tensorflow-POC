@@ -13,7 +13,7 @@ RUN chmod +x /tmp/init_inGraph_tf.py
 
 
 # => Docker entrypoint
-#       Uses three input arguments '--worker_hosts', '--ps_hosts' and '--task_index'
+#       Uses five input arguments '--worker_hosts', '--ps_hosts' and '--task_index'
 
 ENTRYPOINT ["python3.5", "/tmp/init_inGraph_tf.py"]
 CMD ["$1 $2 $3 $4 $5 $6"]
