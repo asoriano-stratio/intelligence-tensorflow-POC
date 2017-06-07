@@ -44,12 +44,12 @@
         "type": "DOCKER"
       },
       "args": [
-          "--id", "{{ cluster_name }}-{{ job }}-{{ i }}",
-          "--worker_hosts", "{{ worker_hosts() }}",
-          "--task_index", "{{ i }}",
-          "--ps_hosts", "{{ ps_hosts() }}",
-          "--job", "{{ job }}",
-          "--vip_port","{{ vip_port }}"
+          "--id {{ cluster_name }}-{{ job }}-{{ i }}",
+          "--worker_hosts {{ worker_hosts() }}",
+          "--task_index {{ i }}",
+          "--ps_hosts {{ ps_hosts() }}",
+          "--job {{ job }}",
+          "--vip_port {{ vip_port }}"
       ],{% if job == "worker" %}
       "cpus": {{ worker_cpu }},
       "mem": {{ worker_mem }},{% else %}
