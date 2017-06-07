@@ -24,7 +24,21 @@
       "id": "{{ cluster_name }}-{{ job }}-{{ i }}",
       "container": {
         "docker": {
-          "image": "{{ docker_image }}"
+          "image": "{{ docker_image }}",
+          "parameters": [
+            {
+              "key": "rm",
+              "value": "true"
+            },
+            {
+              "key": "volume-driver",
+              "value": "nfs"
+            },
+            {
+              "key": "volume",
+              "value": "paas-nfs.labs.stratio.com/var/sds/intelligence/intelligenceantonio/tensorflow/:/tmp/tensorboard:rw"
+            }
+          ]
         },
         "network": "HOST",
         "type": "DOCKER"

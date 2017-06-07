@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 import logging
 
 
-# to not log warning messages everytime we make a not verified TLS request
+# To not log warning messages everytime we make a not verified TLS request
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
@@ -31,6 +31,27 @@ def get_deploymnet_json():
             return None
 
         return deployment_json
+
+
+def print_cluster_definition():
+
+    # TODO
+
+    """
+    cluster = tf.train.ClusterSpec({
+    "worker": [
+        "test-tf-cluster-worker-0.marathon.l4lb.thisdcos.directory:2333",
+        "test-tf-cluster-worker-1.marathon.l4lb.thisdcos.directory:2333",
+        "test-tf-cluster-worker-2.marathon.l4lb.thisdcos.directory:2333"
+    ],
+    "ps":[
+        "test-tf-cluster-ps-0.marathon.l4lb.thisdcos.directory:2333",
+        "test-tf-cluster-ps-1.marathon.l4lb.thisdcos.directory:2333"
+    ]
+    })
+    :return:
+    """
+
 
 
 def deploy():
@@ -59,6 +80,7 @@ def deploy():
         logging.info('· Tensorflow cluster correctly deployed!!!!!')
     else:
         logging.error('· Error while deploying Tensorflow cluster.')
+        logging.error(response.content)
 
 
 def build_auth_req_headers(token_cookie):
@@ -79,7 +101,7 @@ def login_in_dcos():
     username = FLAGS["sso_username"]
     password = FLAGS["sso_password"]
 
-    # First request to mesos master to be redirected to gosec sso login page and be given a session cookie
+    # First request to Mesos master to be redirected to gosec sso login page and be given a session cookie
     first_response = requests.get(url, verify=False)
     callback_url = first_response.url
     session_id_cookie = first_response.history[-1].cookies
@@ -135,16 +157,16 @@ if __name__ == '__main__':
 
     parser.add_argument("--vip_port", type=int, default="2333", help="")
 
+    # => Tensorboard configuration
     parser.add_argument("--tensorboard", type=bool, default="false", help="")
     parser.add_argument("--tensorboard_cpu", type=int, default="1", help="")
     parser.add_argument("--tensorboard_mem", type=int, default="512", help="")
-    parser.add_argument("--train_dir", type=str, default="/tmp/", help="")
+    parser.add_argument("--train_dir", type=str, default="/tmp/tensorboard", help="")
 
     parsed, unparsed = parser.parse_known_args()
     FLAGS = vars(parsed)
 
     logging.info('· Configuration: {}'.format(FLAGS))
-
 
     # => Deploying
     # ------------------------------------------------------------
