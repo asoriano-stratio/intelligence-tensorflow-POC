@@ -3,14 +3,12 @@
   "python3.5",
   "-m",
   "ipykernel",
-  "--exec_files=['/home/asoriano/.local/share/jupyter/kernels/tensorflow/startup.py']",
   "-f",
   "{connection_file}"
  ],
-/*
  "env":{
     "PYTHONSTARTUP":"/home/asoriano/.local/share/jupyter/kernels/tensorflow/startup.py"
-  },*/
+  },
  "language": "python",
  "display_name": "Tensorflow"
 }
