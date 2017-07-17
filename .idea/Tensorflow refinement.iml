@@ -4,6 +4,7 @@
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/tensorflow_kernel/jupyterhub_dispatcher" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/tensorflow_kernel/notebookApp_extension" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/tensorflow_kernel/custom_ipykernel" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
